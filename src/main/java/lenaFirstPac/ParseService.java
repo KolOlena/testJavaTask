@@ -19,10 +19,10 @@ public class ParseService {
         ) {
             double grandAmount = 0;
 
-            printService.createWriter(writer);
+            printService.createPrinter(writer);
 
             for (CSVRecord csvRecord : csvParser) {
-                Matcher matcher = regExpService.createRegExp(csvRecord.get("Department Code"));
+                Matcher matcher = regExpService.createMatcher(csvRecord.get("Department Code"));
 
                 LineItem lineItem = new LineItem();
 
@@ -39,7 +39,7 @@ public class ParseService {
                     lineItem.setDepartmentCodeNumber(matcher.group(2));
                     lineItem.setAmount(amount.isEmpty() ? "N/A" : amount);
 
-                    printService.print(lineItem.asList());
+                    printService.printRecord(lineItem.asList());
 
                     grandAmount += Double.parseDouble(numberFormatter.format(csvRecord.get(3)));
                 }
@@ -51,7 +51,7 @@ public class ParseService {
             lineItem.setDepartmentCode("");
             lineItem.setAmount(Double.toString(grandAmount));
 
-            printService.print(lineItem.asList());
+            printService.printRecord(lineItem.asList());
         }
         catch (IOException e) {}
     }
