@@ -3,15 +3,22 @@ package lenaFirstPac;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.Reader;
 import java.io.Writer;
 import java.util.regex.Matcher;
 
+@Component
 public class ParseService {
-    private RegExpService regExpService = new RegExpService();
-    private NumberFormatter numberFormatter = new NumberFormatter();
-    private PrintService printService = new PrintService();
+
+    @Autowired
+    private RegExpService regExpService;
+    @Autowired
+    private NumberFormatter numberFormatter;
+    @Autowired
+    private PrintService printService;
 
     void parseSource(Reader reader, Writer writer) throws Exception {
         CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader("Name", "Department", "Department Code", "Amount"));

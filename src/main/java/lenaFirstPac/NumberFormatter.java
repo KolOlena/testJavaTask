@@ -1,5 +1,8 @@
 package lenaFirstPac;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class NumberFormatter {
     public String format (String input) {
         input = input.trim()
