@@ -11,13 +11,15 @@ public class PrintService {
     private static final String[] HEADER = csvEditor.HEADER;
     CSVPrinter csvPrinter;
 
-    public void createPrinter(Writer writer) {
-        try {
+    public void createPrinter(Writer writer) throws IOException{
             csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(HEADER));
-        } catch (IOException e) {}
     }
 
     public void printRecord(List<String> lineItem) throws IOException {
             csvPrinter.printRecord(lineItem);
+    }
+
+    public void printClose() throws IOException {
+        csvPrinter.close();
     }
 }

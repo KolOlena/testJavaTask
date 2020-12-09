@@ -11,12 +11,16 @@ public class csvEditor {
     private static OutputCreator outputCreator = new OutputToFileImpl();
     private static ParseService parseService = new ParseService();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try (
                 Reader reader = inputCreator.getReader(SAMPLE_CSV_FILE_PATH);
                 BufferedWriter writer = outputCreator.getWriter(OUTPUT_FILE);
                 ) {
             parseService.parseSource(reader, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
