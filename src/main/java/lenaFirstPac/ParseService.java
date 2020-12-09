@@ -16,7 +16,6 @@ public class ParseService {
     void parseSource(Reader reader, Writer writer) throws Exception {
         CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader("Name", "Department", "Department Code", "Amount"));
         double grandAmount = 0;
-
         printService.createPrinter(writer);
 
         for (CSVRecord csvRecord : csvParser) {

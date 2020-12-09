@@ -10,7 +10,6 @@ import java.util.List;
 public class PrintService {
     private static final String[] HEADER = csvEditor.HEADER;
     CSVPrinter csvPrinter;
-
     public void createPrinter(Writer writer) throws IOException{
             csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(HEADER));
     }
