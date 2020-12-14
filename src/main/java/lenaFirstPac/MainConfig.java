@@ -8,9 +8,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(value = "lenaFirstPac")
 public class MainConfig {
-    public static void main(String[] args) {
+    private static final String SAMPLE_CSV_FILE_PATH = "./src/main/resources/input-training.csv";
+    private static final String OUTPUT_FILE = "./src/main/resources/output-training.csv";
+
+//    public static void main(String[] args) {
+//        ApplicationContext context = new AnnotationConfigApplicationContext(MainConfig.class);
+//        CsvEditor csvEditor = context.getBean("csvEditor", CsvEditor.class);
+//        csvEditor.processFile(SAMPLE_CSV_FILE_PATH, OUTPUT_FILE);
+//    }
+//
+    public void going () {
         ApplicationContext context = new AnnotationConfigApplicationContext(MainConfig.class);
         CsvEditor csvEditor = context.getBean("csvEditor", CsvEditor.class);
-        csvEditor.executeAll();
+        csvEditor.processFile(SAMPLE_CSV_FILE_PATH, OUTPUT_FILE);
     }
 }

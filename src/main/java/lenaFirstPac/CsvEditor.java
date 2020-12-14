@@ -10,20 +10,15 @@ import java.util.logging.Logger;
 public class CsvEditor {
     private static final Logger logger = Logger.getGlobal();
 
-    private static final String SAMPLE_CSV_FILE_PATH = "./src/main/resources/input-training.csv";
-    private static final String OUTPUT_FILE = "./src/main/resources/output-training.csv";
-
-    @Autowired
-    private InputCreator inputCreator;
-    @Autowired
-    private OutputCreator outputCreator;
     @Autowired
     private ParseService parseService;
+    @Autowired
+    private InputOutputCreator inputOutputCreator;
 
-    public void executeAll () {
+    public void processFile(String inputPath, String outputPath) {
         try (
-                Reader reader = inputCreator.getReader(SAMPLE_CSV_FILE_PATH);
-                BufferedWriter writer = outputCreator.getWriter(OUTPUT_FILE);
+                Reader reader = inputOutputCreator.getReader(inputPath);
+                BufferedWriter writer = inputOutputCreator.getWriter(outputPath);
         ) {
             parseService.parseSource(reader, writer);
         } catch (Exception e) {

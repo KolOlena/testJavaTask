@@ -2,52 +2,62 @@ package lenaFirstPac;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class ParseService {
+    public static final String DEPARTMENT_CODE = "([A-Z]*)-(\\d{3})";
+    public static final String N_A = "N/A";
+    Pattern pattern = Pattern.compile(DEPARTMENT_CODE);
+    public static final String[] HEADER = new String[]{"Name", "Department", "Department Code", "Department Code Name", "Department Code Number", "Amount"};
+
 
     @Autowired
-    private RegExpService regExpService;
-    @Autowired
     private NumberFormatter numberFormatter;
-    @Autowired
-    private PrintService printService;
 
     void parseSource(Reader reader, Writer writer) throws Exception {
         CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader("Name", "Department", "Department Code", "Amount"));
         double grandAmount = 0;
-        printService.createPrinter(writer);
+        CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(HEADER));
 
         for (CSVRecord csvRecord : csvParser) {
-            Matcher matcher = regExpService.createMatcher(csvRecord.get("Department Code"));
+            String name = numberFormatter.format(csvRecord.get("Name"));
+            String department = numberFormatter.format(csvRecord.get("Department"));
+            String departmentCode = numberFormatter.format(csvRecord.get("Department Code"));
+            String amount = numberFormatter.format(csvRecord.get("Amount"));
+
+            Matcher matcher = pattern.matcher(departmentCode);
 
             LineItem lineItem = new LineItem();
 
             if (matcher.matches()) {
-                String name = numberFormatter.format(csvRecord.get("Name"));
-                String department = numberFormatter.format(csvRecord.get("Department"));
-                String departmentCode = numberFormatter.format(csvRecord.get("Department Code"));
-                String amount = numberFormatter.format(csvRecord.get("Amount"));
 
-                lineItem.setName(name.isEmpty() ? "N/A" : name);
-                lineItem.setDepartment(department.isEmpty() ? "N/A" : department);
-                lineItem.setDepartmentCode(departmentCode.isEmpty() ? "N/A" : departmentCode);
+                lineItem.setName(name.isEmpty() ? N_A : name);
+                lineItem.setDepartment(department.isEmpty() ? N_A : department);
+                lineItem.setDepartmentCode(departmentCode.isEmpty() ? N_A : departmentCode);
                 lineItem.setDepartmentCodeName(matcher.group(1));
                 lineItem.setDepartmentCodeNumber(matcher.group(2));
-                lineItem.setAmount(amount.isEmpty() ? "N/A" : amount);
+                lineItem.setAmount(amount.isEmpty() ? N_A : amount);
 
-                printService.printRecord(lineItem.asList());
+                printing(csvPrinter, lineItem.asList());
+                delimetr(lineItem.asList());
+
+//                csvPrinter.printRecord(lineItem.asList());
 
                 grandAmount += Double.parseDouble(numberFormatter.format(csvRecord.get(3)));
             }
         }
+
         LineItem lineItem = new LineItem();
 
         lineItem.setName("Total");
@@ -55,8 +65,15 @@ public class ParseService {
         lineItem.setDepartmentCode("");
         lineItem.setAmount(Double.toString(grandAmount));
 
-        printService.printRecord(lineItem.asList());
-        printService.printClose();
-        csvParser.close();
+        csvPrinter.printRecord(lineItem.asList());
+    }
+
+    List delimetr (List lineItem) {
+        return lineItem;
+    }
+    void printing (CSVPrinter csvPrinter, List lineItem) throws IOException {
+
+        csvPrinter.printRecord(lineItem);
     }
 }
+
