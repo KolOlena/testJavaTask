@@ -13,7 +13,7 @@ public class NumberFormatterTest {
     NumberFormatter numberFormatter = new NumberFormatter();
 
     @Test
-    public void numberFormatting() throws IOException {
+    public void csvEditorTesting() throws IOException {
         InputStream expect = new FileInputStream(new File("./src/main/resources/expected-output-training.csv"));
         InputStream fact = new FileInputStream(new File("./src/main/resources/output-training.csv"));
 
