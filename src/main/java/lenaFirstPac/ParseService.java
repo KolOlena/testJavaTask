@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,10 +23,13 @@ public class ParseService {
     @Autowired
     private NumberFormatter numberFormatter;
 
-    void parseSource(Reader reader, Writer writer) throws Exception {
-        CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader("Name", "Department", "Department Code", "Amount"));
+    public void parseSource(InputStream inputStream, OutputStream outputStream) throws Exception {
+
+        // TODO: use try with resources
+        CSVParser csvParser = new CSVParser(new InputStreamReader(inputStream), CSVFormat.DEFAULT.withHeader("Name", "Department", "Department Code", "Amount"));
         double grandAmount = 0;
-        CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(HEADER));
+        CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(outputStream) {
+        }, CSVFormat.DEFAULT.withHeader(HEADER));
 
         for (CSVRecord csvRecord : csvParser) {
             String name = numberFormatter.format(csvRecord.get("Name"));
