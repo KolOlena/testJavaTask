@@ -2,7 +2,6 @@ package lenaFirstPac;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.io.*;
 import java.util.logging.Logger;
 
@@ -21,9 +20,12 @@ public class CsvEditor {
                 OutputStream outputStream = inputOutputCreator.getOutputStream(outputPath);
         ) {
             parseService.parseSource(inputStream, outputStream);
+        } catch (IOException e) {
+            logger.info("Input or output source don't found");
+            throw new RuntimeException(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
             logger.info(e.toString());
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

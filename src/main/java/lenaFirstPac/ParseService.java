@@ -6,19 +6,19 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.io.*;
-import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
 public class ParseService {
-    public static final String DEPARTMENT_CODE = "([A-Z]*)-(\\d{3})";
-    public static final String N_A = "N/A";
-    Pattern pattern = Pattern.compile(DEPARTMENT_CODE);
-    public static final String[] HEADER = new String[]{"Name", "Department", "Department Code", "Department Code Name", "Department Code Number", "Amount"};
+    private static final String DEPARTMENT_CODE = "([A-Z]*)-(\\d{3})";
+    private static final String N_A = "N/A";
+    private static final String[] HEADER = new String[]{"Name", "Department", "Department Code", "Department Code Name", "Department Code Number", "Amount"};
+    private static final Logger logger = Logger.getGlobal();
 
+    Pattern pattern = Pattern.compile(DEPARTMENT_CODE);
 
     @Autowired
     private NumberFormatter numberFormatter;
@@ -26,6 +26,7 @@ public class ParseService {
     public void parseSource(InputStream inputStream, OutputStream outputStream) {
 
         double grandAmount = 0;
+
         try (
                 CSVParser csvParser = new CSVParser(new InputStreamReader(inputStream), CSVFormat.DEFAULT.withHeader("Name", "Department", "Department Code", "Amount"));
                 CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(outputStream), CSVFormat.DEFAULT.withHeader(HEADER));
@@ -62,7 +63,10 @@ public class ParseService {
             lineItem.setDepartmentCode("");
             lineItem.setAmount(Double.toString(grandAmount));
             csvPrinter.printRecord(lineItem.asList());
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            logger.info("Error with parsing file");
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
 
