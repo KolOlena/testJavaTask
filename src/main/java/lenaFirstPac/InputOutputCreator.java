@@ -1,10 +1,8 @@
 package lenaFirstPac;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 
 public interface InputOutputCreator {
-    Reader getReader(String path) throws IOException;
-    BufferedWriter getWriter(String path) throws IOException;
+    InputStream getInputStream (String path) throws IOException;
+    OutputStream getOutputStream (String path) throws IOException;
 }

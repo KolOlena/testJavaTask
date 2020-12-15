@@ -16,10 +16,4 @@ public class MainConfig {
         CsvEditor csvEditor = context.getBean("csvEditor", CsvEditor.class);
         csvEditor.processFile(SAMPLE_CSV_FILE_PATH, OUTPUT_FILE);
     }
-
-    public void going () {
-        ApplicationContext context = new AnnotationConfigApplicationContext(MainConfig.class);
-        CsvEditor csvEditor = context.getBean("csvEditor", CsvEditor.class);
-        csvEditor.processFile(SAMPLE_CSV_FILE_PATH, OUTPUT_FILE);
-    }
 }

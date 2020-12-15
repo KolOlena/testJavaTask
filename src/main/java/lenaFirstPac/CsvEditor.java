@@ -17,10 +17,10 @@ public class CsvEditor {
 
     public void processFile(String inputPath, String outputPath) {
         try (
-                Reader reader = inputOutputCreator.getReader(inputPath);
-                BufferedWriter writer = inputOutputCreator.getWriter(outputPath);
+                InputStream inputStream = inputOutputCreator.getInputStream(inputPath);
+                OutputStream outputStream = inputOutputCreator.getOutputStream(outputPath);
         ) {
-            parseService.parseSource(reader, writer);
+            parseService.parseSource(inputStream, outputStream);
         } catch (Exception e) {
             e.printStackTrace();
             logger.info(e.toString());

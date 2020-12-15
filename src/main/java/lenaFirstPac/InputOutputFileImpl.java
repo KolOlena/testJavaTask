@@ -2,34 +2,20 @@ package lenaFirstPac;
 
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 
 @Service
 public class InputOutputFileImpl implements InputOutputCreator{
 
     @Override
-    public Reader getReader(String path) {
-        Reader reader = null;
-        try {
-            reader = Files.newBufferedReader(Paths.get(path));
-        } catch (IOException e) {
-            throw new RuntimeException("Reader error");
-        }
-        return reader;
+    public InputStream getInputStream(String path) throws IOException {
+        InputStream inputStream = new FileInputStream(path);
+        return inputStream;
     }
 
     @Override
-    public BufferedWriter getWriter(String path) {
-        BufferedWriter writer = null;
-        try {
-            writer = Files.newBufferedWriter(Paths.get(path));
-        } catch (IOException e) {
-            throw new RuntimeException("Writer error");
-        }
-        return writer;
+    public OutputStream getOutputStream(String path) throws IOException {
+        OutputStream outputStream = new FileOutputStream(path);
+        return outputStream;
     }
 }

@@ -15,6 +15,7 @@ public class LineItem {
     private String amount;
 
     public List<String> asList() {
+//        return Arrays.asList(name, department, departmentCode, amount);
         return Arrays.asList(name, department, departmentCode, departmentCodeName, departmentCodeNumber, amount);
     }
 

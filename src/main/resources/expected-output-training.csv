@@ -1,8 +1,0 @@
-Name,Department,Department Code,Department Code Name,Department Code Number,Amount
-Bill,IT,IT-001,IT,001,10500.00
-John,IT,IT-002,IT,002,10500.00
-Max,IT,IT-003,IT,003,10500.00
-Ivan.,IT,IT-005,IT,005,-10500.00
-Katia,IT,IT-006,IT,006,-10500.00
-Olia,IT,IT-007,IT,007,10500.00
-Total,,,,,21000.0
